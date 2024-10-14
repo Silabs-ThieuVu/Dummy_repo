@@ -1,6 +1,6 @@
 name: 01-first workflow
 on: 
-  push:
+  pull_request:
   workflow_dispatch:
     inputs:
       branch: 

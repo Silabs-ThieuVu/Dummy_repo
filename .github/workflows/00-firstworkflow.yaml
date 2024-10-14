@@ -1,6 +1,12 @@
 name: 00-first workflow
 on: 
   push:
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'dev'
 jobs:
   echo-hello:
     runs-on: ubuntu-latest

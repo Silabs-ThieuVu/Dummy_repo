@@ -11,5 +11,26 @@ jobs:
   echo-hello:
     runs-on: ubuntu-latest
     steps:
-      - name: Print Hello
-        run: echo "Hello world"
+      - name: Trigger
+        run: echo "Triggered by ${{github.event_name}} event"
+      
+      - name: Check Branch Input
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            if [ -z "${{ github.event.inputs.branch }}" ]; then
+              echo "Branch input is required for manual trigger."
+              exit 1
+            else
+              BRANCH_NAME="${{ github.ref }}" 
+            fi
+          else
+            # Extract branch name from github.ref
+            BRANCH_NAME="${{ github.ref }}" 
+            BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+          fi
+          echo "Checkout branch $BRANCH_NAME"
+          
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+        with:
+          ref: "$BRANCH_NAME"

@@ -1,4 +1,5 @@
 name: 00-first workflow
+
 on: 
   push:
     branches-ignore:
@@ -19,19 +20,21 @@ on:
       input2:
         description: 'Input 2'
         type: number
-        default: '123'
+        default: 123
       
 jobs:
   echo-hello:
     runs-on: ubuntu-latest
+    
     env:
       ENV_VAR1: 1234
       ENV_VAR2: "abcd"
       ENV_VAR3: ${{ github.event.inputs.input1 }}
-      ENV_VAR3: ${{ github.event.inputs.input2 }}
+      ENV_VAR4: ${{ github.event.inputs.input2 }}
+
     steps:
       - name: Trigger
-        run: echo "Triggered by ${{github.event_name}} event"
+        run: echo "Triggered by ${{ github.event_name }} event"
       
       - name: Check Branch Input
         run: |
@@ -48,11 +51,11 @@ jobs:
             BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
           fi
           echo "Checkout branch $BRANCH_NAME"
-          
+
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
+          ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}
   
       - name: Log Current Branch and Commit
         run: |
@@ -61,11 +64,12 @@ jobs:
       
       - name: Export ENV variable
         run: |
-          echo ${{env.ENV_VAR1}}
-          echo ${{env.ENV_VAR2}}
-          echo ${{env.ENV_VAR3}}
-          echo ${{env.ENV_VAR4}}
-          export var1=${{ env.ENV_VAR1}}
-          var2=${{env.ENV_VAR2}}
+          ENV_VAR4=${{ env.ENV_VAR4 }}
+          echo "${{ env.ENV_VAR1 }}"
+          echo "${{ env.ENV_VAR2 }}"
+          echo "${{ env.ENV_VAR3 }}"
+          echo "$((ENV_VAR4))"
+          var1="${{ env.ENV_VAR1 }}"
+          var2="${{ env.ENV_VAR2 }}"
           echo "var1: $var1"
           echo "var2: $var2"

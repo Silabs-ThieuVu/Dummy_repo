@@ -12,9 +12,23 @@ on:
         description: 'Branch to test'
         type: string
         default: 'dev'
+      input1:
+        description: 'Input 1'
+        type: string
+        default: 'efg'
+      input2:
+        description: 'Input 2'
+        type: number
+        default: '123'
+      
 jobs:
   echo-hello:
     runs-on: ubuntu-latest
+    env:
+      ENV_VAR1: 1234
+      ENV_VAR2: "abcd"
+      ENV_VAR3: ${{ github.event.inputs.input1 }}
+      ENV_VAR3: ${{ github.event.inputs.input2 }}
     steps:
       - name: Trigger
         run: echo "Triggered by ${{github.event_name}} event"
@@ -44,3 +58,14 @@ jobs:
         run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
+      
+      - name: Export ENV variable
+        run: |
+          echo ${{env.ENV_VAR1}}
+          echo ${{env.ENV_VAR2}}
+          echo ${{env.ENV_VAR3}}
+          echo ${{env.ENV_VAR4}}
+          export var1=${{ env.ENV_VAR1}}
+          var2=${{env.ENV_VAR2}}
+          echo "var1: $var1"
+          echo "var2: $var2"

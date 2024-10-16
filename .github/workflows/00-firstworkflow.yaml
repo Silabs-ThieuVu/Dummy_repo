@@ -21,12 +21,12 @@ jobs:
               echo "Branch input is required for manual trigger."
               exit 1
             else
-              BRANCH_NAME="${{ github.ref }}" 
+              BRANCH_NAME="${{ github.event.inputs.branch }}" 
             fi
           else
             # Extract branch name from github.ref
             BRANCH_NAME="${{ github.ref }}" 
-            BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+            # BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
           fi
           echo "Checkout branch $BRANCH_NAME"
           

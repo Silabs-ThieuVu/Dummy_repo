@@ -73,7 +73,7 @@ jobs:
       - name: Move to custom workspace
         run: |
             mv "$GITHUB_WORKSPACE"/* "$(dirname "$GITHUB_WORKSPACE")"
-            rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
+            #rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
             cd ../
       - name: Verify directory3
         run: |

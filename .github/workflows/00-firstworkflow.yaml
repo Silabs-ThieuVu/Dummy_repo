@@ -26,11 +26,16 @@ jobs:
           else
             # Extract branch name from github.ref
             BRANCH_NAME="${{ github.ref }}" 
-            # BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+            BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
           fi
           echo "Checkout branch $BRANCH_NAME"
           
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
-          ref: "$BRANCH_NAME"
+          ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
+  
+      - name: Log Current Branch and Commit
+        run: |
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse HEAD)"

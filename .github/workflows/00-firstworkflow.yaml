@@ -76,7 +76,6 @@ jobs:
             rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
       - name: Verify directory3
         run: |
-            echo "Repo root directory: $GITHUB_WORKSPACE"
             echo "Current directory: $PWD"
             echo "Cloned to: $(pwd)"
             echo "ls -la /home/runner/work/${{ github.event.repository.name }}:"

@@ -64,12 +64,13 @@ jobs:
       
       - name: Export ENV variable
         run: |
-          ENV_VAR4=${{ env.ENV_VAR4 }}
-          echo "${{ env.ENV_VAR1 }}"
-          echo "${{ env.ENV_VAR2 }}"
-          echo "${{ env.ENV_VAR3 }}"
-          echo "$((ENV_VAR4))"
+          echo "e_var1: $ENV_VAR1"
+          echo "e_var2: $ENV_VAR2"
+          echo "e_var3: $ENV_VAR3"
+          echo "e_var4: $ENV_VAR4"
           var1="${{ env.ENV_VAR1 }}"
           var2="${{ env.ENV_VAR2 }}"
+          var3=$ENV_VAR1
           echo "var1: $var1"
           echo "var2: $var2"
+          echo "var3: $var3"

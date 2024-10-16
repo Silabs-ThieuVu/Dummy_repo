@@ -2,8 +2,6 @@ name: 00-first workflow
 
 on: 
   push:
-    branches-ignore:
-      - main
   pull_request:
     branches:
       - main 
@@ -51,12 +49,29 @@ jobs:
             BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
           fi
           echo "Checkout branch $BRANCH_NAME"
-
+      - name: Verify directory1
+        run: |
+            echo "Repo root directory: $GITHUB_WORKSPACE"
+            echo "Current directory: $PWD"
+            echo "Cloned to: $(pwd)"
+            ls -la /home/runner/work/${{ github.event.repository.name }}
+            ls -la $GITHUB_WORKSPACE
       - name: Checkout
         uses: actions/checkout@v4.1.7
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}
-  
+      - name: Move to custom workspace
+        run: |
+            mv "$GITHUB_WORKSPACE/*" $(dirname "$GITHUB_WORKSPACE")
+            rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
+      - name: Verify directory2
+        run: |
+            echo "Repo root directory: $GITHUB_WORKSPACE"
+            echo "Current directory: $PWD"
+            echo "Cloned to: $(pwd)"
+            ls -la /home/runner/work/${{ github.event.repository.name }}
+            ls -la $GITHUB_WORKSPACE
+    
       - name: Log Current Branch and Commit
         run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"

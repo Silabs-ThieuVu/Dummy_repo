@@ -72,9 +72,17 @@ jobs:
             ls -la $GITHUB_WORKSPACE
       - name: Move to custom workspace
         run: |
-            mv "$GITHUB_WORKSPACE/*" $(dirname "$GITHUB_WORKSPACE")
+            mv "$GITHUB_WORKSPACE"/* "$(dirname "$GITHUB_WORKSPACE")"
             rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
-    
+      - name: Verify directory3
+        run: |
+            echo "Repo root directory: $GITHUB_WORKSPACE"
+            echo "Current directory: $PWD"
+            echo "Cloned to: $(pwd)"
+            echo "ls -la /home/runner/work/${{ github.event.repository.name }}:"
+            ls -la /home/runner/work/${{ github.event.repository.name }}
+            echo "ls -la $GITHUB_WORKSPACE"
+            ls -la $GITHUB_WORKSPACE
       - name: Log Current Branch and Commit
         run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"

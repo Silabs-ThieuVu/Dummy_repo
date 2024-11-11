@@ -114,6 +114,10 @@ jobs:
         run: |
           echo "This job is running on Windows!"
           type output\message.txt
-          ls -la
+          echo "Output folder"
+          dir output
+          move output\* ..
+          echo "List folder"
+          dir
       
         

@@ -21,7 +21,7 @@ on:
         default: 123
       
 jobs:
-  echo-hello:
+  job1:
     runs-on: ubuntu-latest
     
     env:
@@ -89,15 +89,31 @@ jobs:
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
       
-      - name: Export ENV variable
+      - name: Create output
         run: |
-          echo "e_var1: $ENV_VAR1"
-          echo "e_var2: $ENV_VAR2"
-          echo "e_var3: $ENV_VAR3"
-          echo "e_var4: $ENV_VAR4"
-          var1="${{ env.ENV_VAR1 }}"
-          var2="${{ env.ENV_VAR2 }}"
-          var3=$ENV_VAR1
-          echo "var1: $var1"
-          echo "var2: $var2"
-          echo "var3: $var3"
+          echo "This job is running on Ubuntu!"
+          mkdir output
+          echo "Hello from Job 1" > output/message.txt
+  job2:
+    runs-on: windows-latest
+    needs: job1
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Log Current Branch and Commit
+        run: |
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse HEAD)"
+          ls -la
+      - name: Download output from Job 1
+        uses: actions/download-artifact@v3
+        with:
+          name: job1-output
+      
+      - name: Run on Windows
+        run: |
+          echo "This job is running on Windows!"
+          type output\message.txt
+          ls -la
+      
+        

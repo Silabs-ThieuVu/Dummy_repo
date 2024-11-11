@@ -92,7 +92,7 @@ jobs:
       - name: Create output
         run: |
           echo "This job is running on Ubuntu!"
-          mkdir output
+          mkdir -p output/test1/test2
           echo "Hello from Job 1" > output/message.txt
       - name: Upload Artifact
         uses: actions/upload-artifact@v3

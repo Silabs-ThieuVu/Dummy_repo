@@ -98,7 +98,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: job1-output
-          path: output
+          path: output/**
   job2:
     runs-on: windows-latest
     needs: job1

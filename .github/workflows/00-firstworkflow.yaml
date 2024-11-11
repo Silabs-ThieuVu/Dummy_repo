@@ -118,10 +118,11 @@ jobs:
       - name: Run on Windows
         run: |
           echo "This job is running on Windows!"
-          type output\message.txt
+          dir
+          type job1-output\message.txt
           echo "Output folder"
-          dir output
-          move output\* ..
+          dir job1-output
+          move job1-output\* ..
           echo "List folder"
           dir
       

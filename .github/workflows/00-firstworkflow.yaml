@@ -93,7 +93,7 @@ jobs:
         run: |
           echo "This job is running on Ubuntu!"
           mkdir -p ${{ github.workspace }}/output/child_folder1/test2
-          echo "Hello from Job 1" > output/message.txt
+          echo "Hello from Job 1" > output/child_folder1/test2/message.txt
           ls -R
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
@@ -123,8 +123,8 @@ jobs:
           dir
           type job1-output\message.txt
           echo "Output folder"
-          dir job1-output
-          move job1-output\* ..
+          dir child_folder1
+          move child_folder1\* ..
           echo "List folder"
           dir
       

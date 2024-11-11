@@ -94,6 +94,11 @@ jobs:
           echo "This job is running on Ubuntu!"
           mkdir output
           echo "Hello from Job 1" > output/message.txt
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: job1-output
+          path: output
   job2:
     runs-on: windows-latest
     needs: job1

@@ -110,6 +110,7 @@ jobs:
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
           dir
+          cd test_folder
       - name: Download output from Job 1
         uses: actions/download-artifact@v3
         with:

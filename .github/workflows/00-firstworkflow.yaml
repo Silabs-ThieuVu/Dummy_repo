@@ -92,8 +92,9 @@ jobs:
       - name: Create output
         run: |
           echo "This job is running on Ubuntu!"
-          mkdir -p output/test1/test2
+          mkdir -p ${{ github.workspace }}/output/child_folder1/test2
           echo "Hello from Job 1" > output/message.txt
+          ls -R
       - name: Upload Artifact
         uses: actions/upload-artifact@v3
         with:

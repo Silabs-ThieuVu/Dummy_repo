@@ -15,11 +15,12 @@ jobs:
       - name: Secret Scanning
         uses: trufflesecurity/trufflehog@main
         with:
-          extra_args: "--version "
+          extra_args: "--version -h"
       - name: Install TruffleHog
         run: |
           python -m pip install --upgrade pip
-          pip install trufflehog
+          pip install --upgrade trufflehog
+          
       - name: Save TruffleHog Report to JSON file
         run: |
           trufflehog --json https://github.com/${{ github.repository }}  > trufflehog_report.json

@@ -23,7 +23,7 @@ jobs:
           trufflehog --repo-url https://github.com/${{ github.repository }} --json > trufflehog_report.json
           
       - name: Upload TruffleHog Report
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.3.4
         with:
           name: trufflehog-report
           path: trufflehog_report.json

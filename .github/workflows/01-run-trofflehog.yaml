@@ -8,20 +8,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Python 3.x
-        uses: actions/setup-python@v2
+      - name: Checkout code
+        uses: actions/checkout@v4.1.7
         with:
-          python-version: '3.x'
-
-      - name: Install TruffleHog
-        run: |
-          python -m pip install --upgrade pip
-          pip install trufflehog
-          trufflehog -V
-
-      - name: Run TruffleHog on the repository
-        run: |
-           trufflehog --json https://github.com/${{ github.repository }} > trufflehog_report.json
+          fetch-depth: 0
+      - name: Secret Scanning
+        uses: trufflesecurity/trufflehog@main
+        with:
+          extra_args: --only-verified
           
       - name: Upload TruffleHog Report
         uses: actions/upload-artifact@v4.3.4

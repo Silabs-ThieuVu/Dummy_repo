@@ -22,7 +22,7 @@ jobs:
           pip install trufflehog
       - name: Save TruffleHog Report to JSON file
         run: |
-          trufflehog git --verson
+          trufflehog -h
           trufflehog git --json https://github.com/${{ github.repository }} > trufflehog_report.json
           
       - name: Upload TruffleHog Report

@@ -18,7 +18,7 @@ jobs:
           extra_args: "--version "
       - name: Save TruffleHog Report to JSON file
         run: |
-          trufflehog git --only-verified --json https://github.com/${{ github.repository }} > trufflehog_report.json
+          trufflehog git --json https://github.com/${{ github.repository }} > trufflehog_report.json
           
       - name: Upload TruffleHog Report
         uses: actions/upload-artifact@v4.3.4

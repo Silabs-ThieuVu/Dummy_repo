@@ -22,8 +22,8 @@ jobs:
           pip install trufflehog
       - name: Save TruffleHog Report to JSON file
         run: |
-          trufflehog -h
-          trufflehog --repo-url https://github.com/${{ github.repository }} --json > trufflehog_report.json
+          trufflehog git --version 
+          trufflehog git --json https://github.com/${{ github.repository }} > trufflehog_report.json
           
       - name: Upload TruffleHog Report
         uses: actions/upload-artifact@v4.3.4

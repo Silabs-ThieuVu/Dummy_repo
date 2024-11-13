@@ -23,7 +23,7 @@ jobs:
           
       - name: Save TruffleHog Report to JSON file
         run: |
-          trufflehog --json https://github.com/${{ github.repository }}  > trufflehog_report.json
+          trufflehog --only-verified --json https://github.com/${{ github.repository }}  > trufflehog_report.json
           
       - name: Upload TruffleHog Report
         uses: actions/upload-artifact@v4.3.4

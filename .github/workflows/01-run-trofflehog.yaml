@@ -1,0 +1,29 @@
+name: 01- Run TruffleHog Security Scan
+
+on:
+  workflow_dispatch:
+
+jobs:
+  trufflehog_scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Install TruffleHog
+        run: |
+          python -m pip install --upgrade pip
+          pip install trufflehog
+
+      - name: Run TruffleHog on the repository
+        run: |
+          trufflehog --repo-url https://github.com/${{ github.repository }} --json > trufflehog_report.json
+          
+      - name: Upload TruffleHog Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: trufflehog-report
+          path: trufflehog_report.json

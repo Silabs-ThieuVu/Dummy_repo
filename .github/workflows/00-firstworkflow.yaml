@@ -29,7 +29,8 @@ jobs:
       ENV_VAR2: "abcd"
       ENV_VAR3: ${{ github.event.inputs.input1 }}
       ENV_VAR4: ${{ github.event.inputs.input2 }}
-
+      REPO_NAME1: ${{ github.repository }}
+      REPO_NAME2: ${GITHUB_REPOSITORY}
     steps:
       - name: Trigger
         run: echo "Triggered by ${{ github.event_name }} event"
@@ -87,9 +88,12 @@ jobs:
       - name: Log Current Branch and Commit
         run: |
           echo ${GITHUB_REPOSITORY##*/}
-          echo ${{ github.event.repository.name }}
-          echo ${{ github.repository }}
-          echo ${${{ github.repository }}##*/}
+          echo "REPO_NAME1=$REPO_NAME1"
+          echo "REPO_NAME2=$REPO_NAME2"
+          REPO_NAME1=${REPO_NAME1##*/}
+          REPO_NAME1=${REPO_NAME1##*/}
+          echo "REPO_NAME1=$REPO_NAME1"
+          echo "REPO_NAME2=$REPO_NAME2"
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
       

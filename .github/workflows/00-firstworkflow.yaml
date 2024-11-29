@@ -88,6 +88,8 @@ jobs:
         run: |
           echo ${GITHUB_REPOSITORY##*/}
           echo ${{ github.event.repository.name }}
+          echo ${{ github.repository }}
+          echo ${${{ github.repository }}##*/}
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
       

@@ -92,8 +92,8 @@ jobs:
           echo "REPO_NAME2=$REPO_NAME2"
           REPO_NAME1=${REPO_NAME1##*/}
           REPO_NAME1=${REPO_NAME1##*/}
-          echo "REPO_NAME1=$REPO_NAME1"
-          echo "REPO_NAME2=$REPO_NAME2"
+          echo "REPO_NAME1=extension/$REPO_NAME1"
+          echo "REPO_NAME1=extension/${REPO_NAME1}"
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
       

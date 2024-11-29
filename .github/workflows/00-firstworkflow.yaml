@@ -86,6 +86,8 @@ jobs:
             ls -la /home/runner/work/${{ github.event.repository.name }}
       - name: Log Current Branch and Commit
         run: |
+          echo ${GITHUB_REPOSITORY##*/}
+          echo ${{ github.event.repository.name }}
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)"
       

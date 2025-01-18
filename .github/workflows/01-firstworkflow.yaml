@@ -22,11 +22,16 @@ jobs:
           echo "REPO_B_OWNER=SiliconLabsInternal" >> $GITHUB_ENV
           echo "REPO_B_NAME=DevS-SQA" >> $GITHUB_ENV
           echo "DEFAULT_BRANCH=debug-thvu" >> $GITHUB_ENV  # Default branch để checkout vào repo B
-          echo "PARAM_1=value1" >> $GITHUB_ENV
-          echo "PARAM_2=value2" >> $GITHUB_ENV
-          echo "PARAM_3=value3" >> $GITHUB_ENV
-          echo "PARAM_4=value4" >> $GITHUB_ENV
-          echo "PARAM_5=value5" >> $GITHUB_ENV
+          #echo "Repo_test=${{ github.repository }}" >> $GITHUB_ENV
+          echo "Repo_test=SiliconLabsSoftware/IEC60730-Library" >> $GITHUB_ENV
+          echo "Contribute_branch=main" >> $GITHUB_ENV
+          echo "Validate_branch=main" >> $GITHUB_ENV
+          echo "ADAPTER_SN_MG12=440189400" >> $GITHUB_ENV
+          echo "HOST_TP_MG12=192.168.1.118" >> $GITHUB_ENV
+          echo "ADAPTER_SN_MG24=440111030" >> $GITHUB_ENV
+          echo "HOST_TP_MG24=192.168.1.69" >> $GITHUB_ENV
+          echo "RUNNER_BUILD=ubuntu-latest" >> $GITHUB_ENV
+          echo "RUNNER_EXECUTE=DS_SQA_HN_01" >> $GITHUB_ENV
 
           # Nếu trigger thủ công (manual), lấy branch của A từ github.ref
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -43,12 +48,15 @@ jobs:
             -d '{
                   "ref": "refs/heads/${{ env.DEFAULT_BRANCH }}",
                   "inputs": {
-                    "param_1": "${{ github.repository }}",
-                    "param_2": "${{ env.PARAM_2 }}",
-                    "param_3": "${{ env.PARAM_3 }}",
-                    "param_4": "${{ env.PARAM_4 }}",
-                    "param_5": "${{ env.PARAM_5 }}",
-                    "param_6": "${{ env.PR_BRANCH }}"
+                    "Repo_test": "${{ env.Repo_test }}",
+                    "Contribute_branch": "${{ env.Contribute_branch }}",
+                    "Validate_branch": "${{ env.Validate_branch }}",
+                    "ADAPTER_SN_MG12": "${{ env.ADAPTER_SN_MG12 }}",
+                    "HOST_TP_MG12": "${{ env.HOST_TP_MG12 }}",
+                    "ADAPTER_SN_MG24": "${{ env.ADAPTER_SN_MG24 }}",
+                    "HOST_TP_MG24": "${{ env.HOST_TP_MG24 }}"
+                    "RUNNER_BUILD": "${{ env.RUNNER_BUILD }}",
+                    "RUNNER_EXECUTE": "${{ env.RUNNER_EXECUTE }}"
                   }
                 }' \
             https://api.github.com/repos/${{ env.REPO_B_OWNER }}/${{ env.REPO_B_NAME }}/actions/workflows/workflow-b.yml/dispatches)

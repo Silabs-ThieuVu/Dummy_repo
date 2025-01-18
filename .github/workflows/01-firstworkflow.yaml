@@ -1,32 +1,60 @@
-name: 01-first workflow
-on: 
-  push:
+name: Trigger Workflow B
+
+on:
   pull_request:
-  workflow_dispatch:
-    inputs:
-      branch: 
-        description: 'Branch to test'
-        type: string
-        default: 'dev'
+    branches:
+      - main  # Trigger khi có PR vào nhánh `main`
+  workflow_dispatch:  # Cho phép trigger thủ công (manual trigger)
+
 jobs:
-  echo-hello:
+  trigger-workflow-b:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Trigger
-        run: echo "Triggered by ${{github.event_name}} event"
-      - name: Check Branch Input
+      - name: Checkout Repository A
+        uses: actions/checkout@v4.2.2
+
+      - name: Set up environment variables
         run: |
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            if [ -z "${{ github.event.inputs.branch }}" ]; then
-              echo "Branch input is required for manual trigger."
-              exit 1
-            fi
-          fi              
-      - name: Checkout
-        uses: actions/checkout@v4.1.7
-        with:
-          ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
-      - name: Log Current Branch and Commit
+          echo "REPO_B_OWNER=another-org" >> $GITHUB_ENV
+          echo "REPO_B_NAME=repo-b" >> $GITHUB_ENV
+          echo "DEFAULT_BRANCH=main" >> $GITHUB_ENV  # Default branch để checkout vào repo B
+          echo "PARAM_1=value1" >> $GITHUB_ENV
+          echo "PARAM_2=value2" >> $GITHUB_ENV
+          echo "PARAM_3=value3" >> $GITHUB_ENV
+          echo "PARAM_4=value4" >> $GITHUB_ENV
+          echo "PARAM_5=value5" >> $GITHUB_ENV
+          echo "PARAM_6=${{ github.head_ref }}" >> $GITHUB_ENV  # PR branch
+
+      - name: Trigger Workflow B on Repo B
         run: |
-          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
-          echo "Current commit: $(git rev-parse HEAD)"
+          response=$(curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            -d '{
+                  "ref": "refs/heads/${{ env.DEFAULT_BRANCH }}",  # Default branch để checkout
+                  "inputs": {
+                    "param_1": "${{ env.PARAM_1 }}",
+                    "param_2": "${{ env.PARAM_2 }}",
+                    "param_3": "${{ env.PARAM_3 }}",
+                    "param_4": "${{ env.PARAM_4 }}",
+                    "param_5": "${{ env.PARAM_5 }}",
+                    "param_6": "${{ env.PARAM_6 }}"  # PR branch
+                  }
+                }' \
+            https://api.github.com/repos/${{ env.REPO_B_OWNER }}/${{ env.REPO_B_NAME }}/actions/workflows/workflow-b.yml/dispatches)
+
+          echo "Response: $response"
+
+      - name: Check if Workflow B ran successfully
+        run: |
+          if echo "$response" | grep -q '"message": "Not Found"'; then
+            echo "Error: Workflow or repository not found."
+            exit 1
+          fi
+          if echo "$response" | grep -q '"status": "completed"'; then
+            echo "Workflow B ran successfully!"
+          else
+            echo "Workflow B failed to start or complete."
+            exit 1
+          fi

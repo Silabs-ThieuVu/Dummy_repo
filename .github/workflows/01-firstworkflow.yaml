@@ -5,7 +5,10 @@ on:
     branches:
       - main  # Trigger khi có PR vào nhánh `main`
   workflow_dispatch:  # Cho phép trigger thủ công (manual trigger)
-
+    inputs:
+      branch_b:
+        description: 'branch checkout b'
+        required: true
 jobs:
   trigger-workflow-b:
     runs-on: ubuntu-latest
@@ -27,7 +30,7 @@ jobs:
 
           # Nếu trigger thủ công (manual), lấy branch của A từ github.ref
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "PR_BRANCH=${{ github.ref }}" >> $GITHUB_ENV  # Lấy branch hiện tại khi trigger thủ công
+            echo "PR_BRANCH=${{ github.event.inputs.branch_b }}" >> $GITHUB_ENV 
           else
             echo "PR_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV  # Lấy branch của PR khi trigger qua PR
           fi

@@ -24,7 +24,13 @@ jobs:
           echo "PARAM_3=value3" >> $GITHUB_ENV
           echo "PARAM_4=value4" >> $GITHUB_ENV
           echo "PARAM_5=value5" >> $GITHUB_ENV
-          echo "PARAM_6=${{ github.head_ref }}" >> $GITHUB_ENV  # PR branch
+
+          # Nếu trigger thủ công (manual), lấy branch của A từ github.ref
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "PR_BRANCH=${{ github.ref }}" >> $GITHUB_ENV  # Lấy branch hiện tại khi trigger thủ công
+          else
+            echo "PR_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV  # Lấy branch của PR khi trigger qua PR
+          fi
 
       - name: Trigger Workflow B on Repo B
         run: |
@@ -39,7 +45,7 @@ jobs:
                     "param_3": "${{ env.PARAM_3 }}",
                     "param_4": "${{ env.PARAM_4 }}",
                     "param_5": "${{ env.PARAM_5 }}",
-                    "param_6": "${{ env.PARAM_6 }}"  # PR branch
+                    "param_6": "${{ env.PR_BRANCH }}"  # Branch của PR hoặc branch thủ công
                   }
                 }' \
             https://api.github.com/repos/${{ env.REPO_B_OWNER }}/${{ env.REPO_B_NAME }}/actions/workflows/workflow-b.yml/dispatches)

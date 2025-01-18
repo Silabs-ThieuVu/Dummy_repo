@@ -16,8 +16,8 @@ jobs:
 
       - name: Set up environment variables
         run: |
-          echo "REPO_B_OWNER=another-org" >> $GITHUB_ENV
-          echo "REPO_B_NAME=repo-b" >> $GITHUB_ENV
+          echo "REPO_B_OWNER=SiliconLabsInternal" >> $GITHUB_ENV
+          echo "REPO_B_NAME=DevS-SQA" >> $GITHUB_ENV
           echo "DEFAULT_BRANCH=main" >> $GITHUB_ENV  # Default branch để checkout vào repo B
           echo "PARAM_1=value1" >> $GITHUB_ENV
           echo "PARAM_2=value2" >> $GITHUB_ENV
@@ -36,7 +36,7 @@ jobs:
         run: |
           response=$(curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: token ${{ secrets.PERSONAL_ACCESS_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.SILABS_THIEUVU_PAT }}" \
             -d '{
                   "ref": "refs/heads/${{ env.DEFAULT_BRANCH }}",  # Default branch để checkout
                   "inputs": {

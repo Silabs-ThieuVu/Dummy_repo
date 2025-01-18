@@ -49,3 +49,7 @@ jobs:
       - name: Output success message
         run: |
           echo "Workflow B has completed successfully!"
+          EXT_NAME=$(echo "${{ github.event.inputs.param_1 }}" | sed 's|.*/||')
+          echo "EXT_NAME=${EXT_NAME}" >> $GITHUB_ENV
+          echo "EXT_NAME = ${{env.EXT_NAME}}"
+

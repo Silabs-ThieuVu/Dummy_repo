@@ -43,7 +43,7 @@ jobs:
             -d '{
                   "ref": "refs/heads/${{ env.DEFAULT_BRANCH }}",
                   "inputs": {
-                    "param_1": "${{ env.PARAM_1 }}",
+                    "param_1": "${{ github.repository }}",
                     "param_2": "${{ env.PARAM_2 }}",
                     "param_3": "${{ env.PARAM_3 }}",
                     "param_4": "${{ env.PARAM_4 }}",

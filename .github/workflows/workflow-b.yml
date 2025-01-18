@@ -27,10 +27,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository B on the specified branch
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ github.event.inputs.param_6 }}  # Checkout theo branch của PR từ repo A
 
       - name: Print input parameters
         run: |

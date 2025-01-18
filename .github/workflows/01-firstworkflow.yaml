@@ -6,6 +6,9 @@ on:
       - main  # Trigger khi có PR vào nhánh `main`
   workflow_dispatch:  # Cho phép trigger thủ công (manual trigger)
     inputs:
+      workflow_b:
+        description: 'workflow b'
+        required: true
       branch_b:
         description: 'branch checkout b'
         required: true
@@ -24,7 +27,14 @@ jobs:
           echo "DEFAULT_BRANCH=debug-thvu" >> $GITHUB_ENV  # Default branch để checkout vào repo B
           #echo "Repo_test=${{ github.repository }}" >> $GITHUB_ENV
           echo "Repo_test=SiliconLabsSoftware/IEC60730-Library" >> $GITHUB_ENV
-          echo "Contribute_branch=main" >> $GITHUB_ENV
+          
+          # Nếu trigger thủ công (manual), lấy branch của A từ github.ref
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "Contribute_branch=${{ github.event.inputs.branch_b }}" >> $GITHUB_ENV 
+          else
+            echo "Contribute_branch=${{ github.head_ref }}" >> $GITHUB_ENV  # Lấy branch của PR khi trigger qua PR
+          fi
+          
           echo "Validate_branch=main" >> $GITHUB_ENV
           echo "ADAPTER_SN_MG12=440189400" >> $GITHUB_ENV
           echo "HOST_TP_MG12=192.168.1.118" >> $GITHUB_ENV
@@ -33,12 +43,7 @@ jobs:
           echo "RUNNER_BUILD=ubuntu-latest" >> $GITHUB_ENV
           echo "RUNNER_EXECUTE=DS_SQA_HN_01" >> $GITHUB_ENV
 
-          # Nếu trigger thủ công (manual), lấy branch của A từ github.ref
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "PR_BRANCH=${{ github.event.inputs.branch_b }}" >> $GITHUB_ENV 
-          else
-            echo "PR_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV  # Lấy branch của PR khi trigger qua PR
-          fi
+          
 
       - name: Trigger Workflow B on Repo B
         run: |
@@ -59,7 +64,7 @@ jobs:
                     "RUNNER_EXECUTE": "${{ env.RUNNER_EXECUTE }}"
                   }
                 }' \
-            https://api.github.com/repos/${{ env.REPO_B_OWNER }}/${{ env.REPO_B_NAME }}/actions/workflows/workflow-b.yml/dispatches)
+            https://api.github.com/repos/${{ env.REPO_B_OWNER }}/${{ env.REPO_B_NAME }}/actions/workflows/${{ github.event.inputs.workflow_b }}/dispatches)
 
           echo "Response: $response"
 

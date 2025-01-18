@@ -1,0 +1,51 @@
+name: Workflow B
+
+on:
+  workflow_dispatch:
+    inputs:
+      param_1:
+        description: 'Parameter 1'
+        required: true
+      param_2:
+        description: 'Parameter 2'
+        required: true
+      param_3:
+        description: 'Parameter 3'
+        required: true
+      param_4:
+        description: 'Parameter 4'
+        required: true
+      param_5:
+        description: 'Parameter 5'
+        required: true
+      param_6:
+        description: 'PR Branch'
+        required: true  # Branch của PR từ repo A
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository B on the specified branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.param_6 }}  # Checkout theo branch của PR từ repo A
+
+      - name: Print input parameters
+        run: |
+          echo "Parameter 1: ${{ github.event.inputs.param_1 }}"
+          echo "Parameter 2: ${{ github.event.inputs.param_2 }}"
+          echo "Parameter 3: ${{ github.event.inputs.param_3 }}"
+          echo "Parameter 4: ${{ github.event.inputs.param_4 }}"
+          echo "Parameter 5: ${{ github.event.inputs.param_5 }}"
+          echo "PR Branch: ${{ github.event.inputs.param_6 }}"
+
+      - name: Run some tasks based on parameters
+        run: |
+          # Thực hiện công việc gì đó với các tham số
+          echo "Running tasks on PR branch ${{ github.event.inputs.param_6 }} with parameters ${{ github.event.inputs.param_1 }} and ${{ github.event.inputs.param_2 }}"
+
+      - name: Output success message
+        run: |
+          echo "Workflow B has completed successfully!"

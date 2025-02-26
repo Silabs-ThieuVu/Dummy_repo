@@ -13,12 +13,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Check out the code from the PR
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-        repository: ${{ github.event.pull_request.head.repo.full_name }}
-        token: ${{ secrets.SILABS_THIEUVU_PAT }}
+    - name: Set up Git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+    - name: Add remote and fetch the PR branch
+      env:
+        GH_PAT: ${{ secrets.SILABS_THIEUVU_PAT }}
+      run: |
+        git remote add forked https://github.com/${{ github.event.pull_request.head.repo.full_name }}
+        git fetch forked
+        git checkout -b ${{ github.event.pull_request.head.ref }} forked/${{ github.event.pull_request.head.ref }}
 
     - name: Print Repository and Branch Info
       run: |

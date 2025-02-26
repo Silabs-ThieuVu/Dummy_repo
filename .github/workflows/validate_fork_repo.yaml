@@ -18,7 +18,7 @@ jobs:
       with:
         ref: ${{ github.event.pull_request.head.ref }}
         repository: ${{ github.event.pull_request.head.repo.full_name }}
-        token: ${{ secrets.SILABS_THIEUVU_PAT }}
+        token: ${{ secrets.GH_PAT }}
 
     - name: Print Repository and Branch Info
       run: |

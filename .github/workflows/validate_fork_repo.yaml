@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the code from the PR
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
+        repository: ${{ github.event.pull_request.head.repo.full_name }}
+        token: ${{ secrets.SILABS_THIEUVU_PAT }}
+
+    - name: Print Repository and Branch Info
+      run: |
+        echo "Repository: ${{ github.event.pull_request.head.repo.full_name }}"
+        echo "Branch: ${{ github.event.pull_request.head.ref }}"

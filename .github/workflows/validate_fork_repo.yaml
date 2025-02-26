@@ -19,8 +19,6 @@ jobs:
         git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
     - name: Clone forked repo and fetch the PR branch
-      env:
-        GH_PAT: ${{ secrets.SILABS_THIEUVU_PAT }}
       run: |
         git clone https://github.com/${{ github.event.pull_request.head.repo.full_name }}.git forked-repo
         cd forked-repo
@@ -32,3 +30,9 @@ jobs:
         cd forked-repo
         echo "Repository: ${{ github.event.pull_request.head.repo.full_name }}"
         echo "Branch: ${{ github.event.pull_request.head.ref }}"
+        
+    - name: Show the differences between head and base branch
+      run: |
+        cd forked-repo
+        git fetch origin ${{ github.event.pull_request.base.ref }}
+        git diff origin/${{ github.event.pull_request.base.ref }} ${{ github.event.pull_request.head.ref }}

@@ -2,6 +2,9 @@ name: Test PR
 
 on:
   workflow_dispatch: 
+  pull_request:
+    branches:
+      - dev
 jobs:
   1:
     runs-on: ubuntu-latest
@@ -10,4 +13,4 @@ jobs:
 
       - name: Print
         run: |
-          echo "dev branch"
+          echo "dev1 branch"

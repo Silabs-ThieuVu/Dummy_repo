@@ -1,0 +1,13 @@
+name: Test PR
+
+on:
+  workflow_dispatch: 
+jobs:
+  1:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Print
+        run: |
+          echo "dev branch"

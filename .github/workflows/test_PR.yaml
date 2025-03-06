@@ -3,7 +3,7 @@ name: Test PR
 on:
   workflow_dispatch: 
 jobs:
-  1:
+  j_1:
     runs-on: ubuntu-latest
 
     steps:

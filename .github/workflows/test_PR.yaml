@@ -6,7 +6,7 @@ on:
     branches:
       - dev
 jobs:
-  1:
+  j_1:
     runs-on: ubuntu-latest
 
     steps:

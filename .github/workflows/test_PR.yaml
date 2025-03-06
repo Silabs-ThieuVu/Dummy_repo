@@ -1,4 +1,4 @@
-name: Test PR on dev
+name: Test PR on dev1
 
 on:
   workflow_dispatch: 
@@ -13,4 +13,4 @@ jobs:
 
       - name: Print
         run: |
-          echo "dev branch"
+          echo "dev1 branch"

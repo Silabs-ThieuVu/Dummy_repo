@@ -13,4 +13,4 @@ jobs:
 
       - name: Print
         run: |
-          echo "dev branch"
+          echo "Secret: ${{ secrets.SILABS_THIEUVU_PAT }}"
